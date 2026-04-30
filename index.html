@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ru">
+<html lang="cs">
 
 <head>
 
@@ -10,7 +10,7 @@
 
   <meta name="color-scheme" content="light" />
 
-  <title>Пример приглашения — демо для публикации</title>
+  <title>Ukázková pozvánka — demo k publikaci</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
 
@@ -20,27 +20,27 @@
 
   <!--
 
-    ФОТО: файлы кладите в подпапку img/ рядом с этим index.html.
+    FOTOGRAFIE: soubory ukládajte do složky img/ vedle tohoto index.html.
 
-    Переименуйте снимки заказчика под имена ниже — править код не нужно.
+    Přejmenujte podle níže uvedených názvů — kód kvůli tomu měnit nemusíte.
 
-    Совет: квадратные кадры для сетки месяцев, для круга — чуть запас по краям.
+    Tip: pro mřížku měsíců čtvercové záběry, u kruhového portrétu nechte okraj.
 
-      img/portret-glavnaya.jpg — главный портрет
+      img/portret-glavnaya.jpg — hlavní portrét v kruhu nahoře
 
-      img/parents.jpg — родители (блок «С любовью»)
+      img/parents.jpg — sekce „S láskou“ (rodina)
 
-      img/place.jpg — место проведения в блоке «Сохраните дату»
+      img/place.jpg — místo konání ve „Uložte si termín“
 
-      img/mesyac-01.jpg … mesyac-12.jpg — «12 месяцев»
+      img/mesyac-01.jpg … mesyac-12.jpg — „12 měsíců“
 
-      audio/audio.mp3 — фоновая музыка (после клика по конверту браузер чаще разрешает звук)
+      audio/audio.mp3 — hudba na pozadí (po klepnutí na obálku ji prohlížeč častěji povolí)
 
-      Палитра дресс-кода: переменные --dress-1 … --dress-5 в блоке :root ниже по стилям.
+      Paleta dress code: proměnné --dress-1 … --dress-5 v CSS bloku :root níže.
 
-      Высота встроенной Google Form: переменная --form-embed-height в :root (размер шрифта внутри iframe Google не настраивается — только высота окна).
+      Výška vloženého Google Formuláře: proměnná --form-embed-height v :root (velikost písma uvnitř iframe Google měnit nelze).
 
-      Список имён фото: img/FOTO-IMENA.txt.
+      Seznam souborů: img/FOTO-IMENA.txt
 
   -->
 
@@ -66,7 +66,7 @@
 
       --white: #fff;
 
-      /* палитра дресс-кода — меняйте hex под заказ (квадраты ниже подтянут сами): */
+      /* paleta dress code — měňte hex pod zakázku (čtverce se samy přizpůsobí): */
 
       --dress-1: #f4b8c5;
 
@@ -80,7 +80,7 @@
 
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-      /* блок Google Form: высота области (прокрутка внутри iframe). В диалоге «Встроить» у Google высоту можно не трогать — здесь важнее это значение. Если обрезана кнопка «Отправить» — увеличьте max (первое число) или dvh. */
+      /* Google Form: výška okna (scrollování uvnitř iframe). V dialogu „Vložit“ u Googlu to nemusíte ladit — řídí tuto hodnotu. Chybí tlačítko „Odeslat“? Zvyšte první číslo nebo dvh. */
 
       --form-embed-height: min(960px, 86dvh);
 
@@ -1292,13 +1292,13 @@
 
   <div class="page">
 
-    <div class="envelope-layer" id="envelopeScreen" role="dialog" aria-label="Открыть приглашение">
+    <div class="envelope-layer" id="envelopeScreen" role="dialog" aria-label="Otevřít pozvánku">
 
       <div class="env-card" id="openInvite" tabindex="0" role="button">
 
-        <p class="env-sub" id="envelopeSub">Первый день рождения</p>
+        <p class="env-sub" id="envelopeSub">První narozeniny</p>
 
-        <p class="env-pretitle" id="envelopeTitle">Маленькая<br />София</p>
+        <p class="env-pretitle" id="envelopeTitle">Malá<br />Sofie</p>
 
         <div class="env-visual">
 
@@ -1310,7 +1310,7 @@
 
         </div>
 
-        <p class="env-hint">Нажмите, чтобы открыть приглашение</p>
+        <p class="env-hint">Klepněte pro otevření pozvánky</p>
 
       </div>
 
@@ -1322,19 +1322,19 @@
 
       <section class="hero hero-reveal">
 
-        <p class="eyebrow">Первый день рождения</p>
+        <p class="eyebrow">První narozeniny</p>
 
-        <h1>Маленькая<br>София</h1>
+        <h1>Malá<br>Sofie</h1>
 
         <p class="ornament">☙ ❧</p>
 
         <div class="photo-ring">
 
-          <img src="img/portret-glavnaya.jpg" width="140" height="140" alt="Портрет" />
+          <img src="img/portret-glavnaya.jpg" width="140" height="140" alt="Portrét" />
 
         </div>
 
-        <p class="lead">Приглашаем вас в сад сказки — тихо, нежно, среди цветов и света. Будем рады видеть вас рядом в этот особенный день.</p>
+        <p class="lead">Zveme vás do pohádkové zahrady — tiše, něžně, mezi květy a světlem. Budeme rádi, že budete s námi v tento výjimečný den.</p>
 
       </section>
 
@@ -1342,17 +1342,17 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Семья</p>
+        <p class="eyebrow">Rodina</p>
 
-        <h2>С любовью</h2>
+        <h2>S láskou</h2>
 
         <div class="parents-photo-wrap">
 
-          <img src="img/parents.jpg" alt="Мама и папа" loading="lazy" width="960" height="600" />
+          <img src="img/parents.jpg" alt="Eva a Martin" loading="lazy" width="960" height="600" />
 
         </div>
 
-        <p class="parents-caption">Мы будем счастливы разделить этот день с вами.</p>
+        <p class="parents-caption">Těšíme se, že tento den strávíme s vámi.<br />S láskou, Eva a Martin</p>
 
       </section>
 
@@ -1360,23 +1360,23 @@
 
       <section class="reveal-on-scroll countdown">
 
-        <p class="eyebrow">До встречи</p>
+        <p class="eyebrow">Do setkání</p>
 
-        <h2>Обратный отсчёт</h2>
+        <h2>Odpočet</h2>
 
         <div class="panel">
 
-          <p class="count-label" id="countText">Считаем дни…</p>
+          <p class="count-label" id="countText">Počítáme dny…</p>
 
           <div class="cd-row" id="countGrid" hidden>
 
-            <div class="cd-cell"><div class="cd-num" id="d">—</div><div class="cd-sub">дней</div></div>
+            <div class="cd-cell"><div class="cd-num" id="d">—</div><div class="cd-sub">dní</div></div>
 
-            <div class="cd-cell"><div class="cd-num" id="h">—</div><div class="cd-sub">час</div></div>
+            <div class="cd-cell"><div class="cd-num" id="h">—</div><div class="cd-sub">hod</div></div>
 
-            <div class="cd-cell"><div class="cd-num" id="m">—</div><div class="cd-sub">мин</div></div>
+            <div class="cd-cell"><div class="cd-num" id="m">—</div><div class="cd-sub">min</div></div>
 
-            <div class="cd-cell"><div class="cd-num" id="s">—</div><div class="cd-sub">сек</div></div>
+            <div class="cd-cell"><div class="cd-num" id="s">—</div><div class="cd-sub">sek</div></div>
 
           </div>
 
@@ -1388,23 +1388,23 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Куда и когда</p>
+        <p class="eyebrow">Kde a kdy</p>
 
-        <h2>Сохраните дату</h2>
+        <h2>Uložte si termín</h2>
 
         <div class="panel">
 
-          <p><strong>Дата и время:</strong> суббота, 20 июня 2026 · с 15:00</p>
+          <p><strong>Datum a čas:</strong> sobota 20. června 2026 · od 15:00</p>
 
-          <p><strong>Место:</strong> дачный клуб «Поляна», Лесная аллея, 8</p>
+          <p><strong>Místo:</strong> rekreační klub „Poljana“, Lesní alej 8</p>
 
           <div class="place-photo-wrap">
 
-            <img src="img/place.jpg" alt="Место проведения" loading="lazy" width="960" height="720" />
+            <img src="img/place.jpg" alt="Místo konání" loading="lazy" width="960" height="720" />
 
           </div>
 
-          <a class="btn-primary" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Открыть карту</a>
+          <a class="btn-primary" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Otevřít mapu</a>
 
         </div>
 
@@ -1414,37 +1414,37 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Первый год</p>
+        <p class="eyebrow">První rok</p>
 
-        <h2>Двенадцать месяцев</h2>
+        <h2>Dvanáct měsíců</h2>
 
-        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Маленькие вехи — большая любовь. Двенадцать фото по порядку: слева направо, сверху вниз.</p>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Malé milníky — velká láska.</p>
 
-        <div class="mosaic" id="months" aria-label="Фото по месяцам">
+        <div class="mosaic" id="months" aria-label="Fotografie po měsících">
 
-          <div class="mosaic-cell"><img src="img/mesyac-01.jpg" alt="1-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-01.jpg" alt="1. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-02.jpg" alt="2-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-02.jpg" alt="2. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-03.jpg" alt="3-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-03.jpg" alt="3. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-04.jpg" alt="4-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-04.jpg" alt="4. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-05.jpg" alt="5-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-05.jpg" alt="5. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-06.jpg" alt="6-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-06.jpg" alt="6. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-07.jpg" alt="7-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-07.jpg" alt="7. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-08.jpg" alt="8-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-08.jpg" alt="8. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-09.jpg" alt="9-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-09.jpg" alt="9. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-10.jpg" alt="10-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-10.jpg" alt="10. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-11.jpg" alt="11-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-11.jpg" alt="11. měsíc" loading="lazy" width="400" height="400" /></div>
 
-          <div class="mosaic-cell"><img src="img/mesyac-12.jpg" alt="12-й месяц" loading="lazy" width="400" height="400" /></div>
+          <div class="mosaic-cell"><img src="img/mesyac-12.jpg" alt="12. měsíc" loading="lazy" width="400" height="400" /></div>
 
         </div>
 
@@ -1454,15 +1454,15 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Подарки</p>
+        <p class="eyebrow">Dárky</p>
 
-        <h2>Коротко о подарках</h2>
+        <h2>Stručně o darech</h2>
 
         <div class="panel">
 
-          <p>Для нас главное — ваше присутствие. Если хочется что-то выбрать заранее, загляните в список идей по ссылке ниже.</p>
+          <p>Pro nás je nejdůležitější vaše přítomnost. Chcete-li něco vybrat dopředu, podívejte se na orientační seznam níže.</p>
 
-          <p><a href="#" style="color:var(--sage);font-weight:600;">Список подарков (пример)</a></p>
+          <p><a href="#" style="color:var(--sage);font-weight:600;">Seznam dárků (příklad)</a></p>
 
         </div>
 
@@ -1472,27 +1472,27 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Образ</p>
+        <p class="eyebrow">Styl</p>
 
-        <h2>Дресс-код</h2>
+        <h2>Dress code</h2>
 
         <div class="panel">
 
-          <div class="dress-swatches" role="list" aria-label="Подсказка по оттенкам">
+          <div class="dress-swatches" role="list" aria-label="Doporučené odstíny">
 
-            <span class="dress-swatch" role="listitem" style="background:var(--dress-1)" title="Оттенок 1"></span>
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-1)" title="Odstín 1"></span>
 
-            <span class="dress-swatch" role="listitem" style="background:var(--dress-2)" title="Оттенок 2"></span>
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-2)" title="Odstín 2"></span>
 
-            <span class="dress-swatch" role="listitem" style="background:var(--dress-3)" title="Оттенок 3"></span>
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-3)" title="Odstín 3"></span>
 
-            <span class="dress-swatch" role="listitem" style="background:var(--dress-4)" title="Оттенок 4"></span>
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-4)" title="Odstín 4"></span>
 
-            <span class="dress-swatch" role="listitem" style="background:var(--dress-5)" title="Оттенок 5"></span>
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-5)" title="Odstín 5"></span>
 
           </div>
 
-          <p>Пастель, лёгкие ткани, цветочные акценты. Оттенки квадратов меняются в одном месте: в блоке стилей <code style="font-size:0.75em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">:root</code> переменные <code style="font-size:0.72em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-1</code> … <code style="font-size:0.72em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-5</code>.</p>
+          <p>Pastelové tóny, lehké látky, květinové akcenty. Budeme rádi, když váš outfit doladíte k odstínům níže.</p>
 
         </div>
 
@@ -1502,37 +1502,19 @@
 
       <section class="reveal-on-scroll">
 
-        <p class="eyebrow">Ответьте, пожалуйста</p>
+        <p class="eyebrow">Potvrzení</p>
 
-        <h2>Подтверждение</h2>
+        <h2>Dejte nám vědět</h2>
 
         <div class="panel">
 
-          <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.55rem;">Ниже встроена Google-форма — ответы собираются в вашу таблицу; для заказа подставляйте другую ссылку из Google Forms (кнопка «Встроить»).</p>
-
-          <details class="form-help">
-
-            <summary>Вместо вопросов показывается вход в Google?</summary>
-
-            <p>Откройте эту форму в редакторе Google Forms → шестерёнка <strong>Настройки</strong> → снимите ограничение вроде «только ваш организационный аккаунт» / домен Workspace. Для публичного приглашения ответ должен отправляться <strong>без обязательного входа в Google</strong> (если политики компании это допускают).</p>
-
-            <p>Если организация не разрешает анонимный доступ к форме, iframe на вашем сайте всегда будет просить Войти — тогда имеет смысл кнопка «Открыть форму» на отдельной вкладке или другой сервис: Microsoft Forms с публичной ссылкой, Tally.so, Fillout и т.д.</p>
-
-          </details>
-
-
-
-          <p style="font-size:0.74rem;color:var(--muted);margin:0 0 0.5rem;line-height:1.45;">Высоту окна формы задаёт CSS: <code style="font-size:0.86em;background:rgba(0,0,0,0.06);padding:0.05rem 0.2rem;border-radius:4px;">--form-embed-height</code> в <code style="font-size:0.86em;background:rgba(0,0,0,0.06);padding:0.05rem 0.2rem;border-radius:4px;">:root</code> (не обязательно менять цифры в окне «Встроить» Google). Длинную анкету гости листают внутри окна.</p>
-
-
+          <p style="font-size:0.95rem;color:var(--muted);margin-bottom:0.75rem;">Prosím vyplňte krátký formulář níže — díky tomu víme, zda dorazíte.</p>
 
           <div class="form-embed-wrap">
 
-            <iframe title="Подтверждение участия" class="form-embed-frame" src="https://docs.google.com/forms/d/e/1FAIpQLSeKVHH6bJpHqRpMYkgd0eWfAglsIWMPiB4p4KFxo6dVEA1aMw/viewform?embedded=true" width="100%" height="960" loading="lazy">Загрузка…</iframe>
+            <iframe title="Potvrzení účasti" class="form-embed-frame" src="https://docs.google.com/forms/d/e/1FAIpQLSeKVHH6bJpHqRpMYkgd0eWfAglsIWMPiB4p4KFxo6dVEA1aMw/viewform?embedded=true" width="100%" height="960" loading="lazy">Načítání…</iframe>
 
           </div>
-
-          <p class="note">Дата таймера — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">TARGET_ISO</code> внизу. Фото — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">img/</code>, музыка — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">audio/audio.mp3</code>, высота блока формы — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--form-embed-height</code>, палитра дресс-кода — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-1</code> … <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-5</code> в <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">:root</code>. Имена файлов — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">img/FOTO-IMENA.txt</code>.</p>
 
         </div>
 
@@ -1540,7 +1522,7 @@
 
 
 
-      <footer>Демо-приглашение · пример для показа клиентам · все данные вымышленные</footer>
+      <footer>Eva · Martin · Sofie</footer>
 
     </main>
 
@@ -1548,15 +1530,15 @@
 
 
 
-  <!-- Файл: audio/audio.mp3. Автозапуск ограничивают — пробуем после конверта; если тихо, нажмите ♪ рядом с подсказкой. -->
+  <!-- Soubor: audio/audio.mp3. Automatické přehrání omezují prohlížeče — zkoušíme po otevření obálky; když je ticho, stiskněte ♪ vedle nápovědy. -->
 
   <audio id="bgMusic" src="audio/audio.mp3" preload="auto" loop></audio>
 
-  <div class="music-bar" role="region" aria-label="Музыка на странице">
+  <div class="music-bar" role="region" aria-label="Hudba na stránce">
 
-    <button type="button" id="musicToggle" class="music-fab" aria-describedby="musicHelp" aria-label="Музыка: включить">♪</button>
+    <button type="button" id="musicToggle" class="music-fab" aria-describedby="musicHelp" aria-label="Hudba: zapnout">♪</button>
 
-    <p class="music-hint" id="musicHelp">Часть браузеров не даёт звук с первого раза. Нажмите зелёную кнопку ♪ — так музыка точно включится.</p>
+    <p class="music-hint" id="musicHelp">Některé prohlížeče nespustí zvuk napoprvé. Stiskněte zelené tlačítko ♪ — hudba pak určitě poběží.</p>
 
   </div>
 
@@ -1588,7 +1570,7 @@
 
               fab.textContent = "♫";
 
-              fab.setAttribute("aria-label", "Музыка: пауза");
+              fab.setAttribute("aria-label", "Hudba: pozastavit");
 
             }
 
@@ -1596,7 +1578,9 @@
 
             var help = document.getElementById("musicHelp");
 
-            if (help) help.classList.add("music-hint--off");          })
+            if (help) help.classList.add("music-hint--off");
+
+          })
 
           .catch(function () {});
 
@@ -1644,7 +1628,7 @@
 
               toggle.textContent = "♫";
 
-              toggle.setAttribute("aria-label", "Музыка: пауза");
+              toggle.setAttribute("aria-label", "Hudba: pozastavit");
 
               var h2 = document.getElementById("musicHelp");
 
@@ -1660,7 +1644,7 @@
 
             toggle.textContent = "♪";
 
-            toggle.setAttribute("aria-label", "Музыка: включить");
+            toggle.setAttribute("aria-label", "Hudba: zapnout");
 
             var h3 = document.getElementById("musicHelp");
 
@@ -1676,7 +1660,7 @@
 
 
 
-    /* Поменяйте дату праздника */
+    /* Upravte datum oslavy */
 
     var TARGET_ISO = "2026-06-20T15:00:00";
 
@@ -1712,7 +1696,7 @@
 
         if (diff <= 0) {
 
-          countText.textContent = "Сегодня праздник! До встречи ✶";
+          countText.textContent = "Dnes začíná oslava! Těšíme se na vás ✶";
 
           grid.hidden = true;
 
@@ -1722,7 +1706,7 @@
 
         grid.hidden = false;
 
-        countText.textContent = "Осталось до начала";
+        countText.textContent = "Zbývá do začátku";
 
         var sec = Math.floor(diff / 1000);
 
