@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <meta name="color-scheme" content="light" />
+
+  <title>Пример приглашения — демо для публикации</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!--
+
+    ФОТО: файлы кладите в подпапку img/ рядом с этим index.html.
+
+    Переименуйте снимки заказчика под имена ниже — править код не нужно.
+
+    Совет: квадратные кадры для сетки месяцев, для круга — чуть запас по краям.
+
+      img/portret-glavnaya.jpg — главный портрет
+
+      img/parents.jpg — родители (блок «С любовью»)
+
+      img/place.jpg — место проведения в блоке «Сохраните дату»
+
+      img/mesyac-01.jpg … mesyac-12.jpg — «12 месяцев»
+
+      audio/audio.mp3 — фоновая музыка (после клика по конверту браузер чаще разрешает звук)
+
+      Палитра дресс-кода: переменные --dress-1 … --dress-5 в блоке :root ниже по стилям.
+
+      Высота встроенной Google Form: переменная --form-embed-height в :root (размер шрифта внутри iframe Google не настраивается — только высота окна).
+
+      Список имён фото: img/FOTO-IMENA.txt.
+
+  -->
+
+  <style>
+
+    :root {
+
+      --paper: #faf7f3;
+
+      --cream: #f3ebe4;
+
+      --blush: #ead5d8;
+
+      --rose: #c17b86;
+
+      --rose-deep: #9e5562;
+
+      --sage: #7d9b8c;
+
+      --ink: #2c2628;
+
+      --muted: #6b6164;
+
+      --white: #fff;
+
+      /* палитра дресс-кода — меняйте hex под заказ (квадраты ниже подтянут сами): */
+
+      --dress-1: #f4b8c5;
+
+      --dress-2: #e8cfe0;
+
+      --dress-3: #dce8dc;
+
+      --dress-4: #f9e9dd;
+
+      --dress-5: #c9a88d;
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* блок Google Form: высота области (прокрутка внутри iframe). В диалоге «Встроить» у Google высоту можно не трогать — здесь важнее это значение. Если обрезана кнопка «Отправить» — увеличьте max (первое число) или dvh. */
+
+      --form-embed-height: min(960px, 86dvh);
+
+    }
+
+
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+
+    html { scroll-behavior: smooth; }
+
+
+
+    body {
+
+      font-family: "Manrope", system-ui, sans-serif;
+
+      background: var(--paper);
+
+      color: var(--ink);
+
+      font-size: 16px;
+
+      line-height: 1.55;
+
+      -webkit-font-smoothing: antialiased;
+
+    }
+
+
+
+    .page {
+
+      max-width: 430px;
+
+      margin: 0 auto;
+
+      min-height: 100dvh;
+
+      background: linear-gradient(180deg, var(--paper) 0%, var(--cream) 55%, var(--blush) 100%);
+
+      box-shadow: 0 0 80px rgba(44, 38, 40, 0.08);
+
+    }
+
+
+
+    /* ——— Envelope ——— */
+
+    @keyframes env-layer-in {
+
+      from { opacity: 0; }
+
+      to { opacity: 1; }
+
+    }
+
+    @keyframes env-card-in {
+
+      from { opacity: 0; transform: translateY(28px) scale(0.96); }
+
+      to { opacity: 1; transform: translateY(0) scale(1); }
+
+    }
+
+    @keyframes env-float {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-8px); }
+
+    }
+
+    @keyframes wax-shine {
+
+      0%, 100% { box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.35), 0 6px 18px rgba(158, 85, 98, 0.32); }
+
+      50% { box-shadow: inset 0 2px 12px rgba(255, 255, 255, 0.55), 0 8px 22px rgba(158, 85, 98, 0.38); }
+
+    }
+
+    .envelope-layer {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 50;
+
+      display: grid;
+
+      place-items: center;
+
+      padding: 1.5rem;
+
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, #fff9f6, #e8d6da);
+
+      transition: opacity 0.65s ease, visibility 0.65s ease;
+
+      animation: env-layer-in 0.85s var(--ease-out) both;
+
+    }
+
+    .envelope-layer.is-hidden {
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none;
+
+    }
+
+
+
+    .env-card {
+
+      width: min(90vw, 300px);
+
+      cursor: pointer;
+
+      text-align: center;
+
+      -webkit-tap-highlight-color: transparent;
+
+      animation: env-card-in 0.95s var(--ease-out) 0.08s both, env-float 5.5s ease-in-out 1.2s infinite;
+
+    }
+
+    .env-pretitle {
+
+      font-family: "Libre Baskerville", serif;
+
+      font-size: 1.05rem;
+
+      font-weight: 400;
+
+      color: var(--rose-deep);
+
+      line-height: 1.35;
+
+      margin: 0 auto 1rem;
+
+      max-width: 22ch;
+
+    }
+
+    .env-sub {
+
+      margin: 0 0 0.85rem;
+
+      font-size: 0.78rem;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+
+      color: var(--sage);
+
+      font-weight: 600;
+
+    }
+
+    .env-card:focus { outline: 2px solid var(--rose); outline-offset: 6px; border-radius: 4px; }
+
+
+
+    .env-visual {
+
+      position: relative;
+
+      height: 200px;
+
+      filter: drop-shadow(0 16px 28px rgba(44, 38, 40, 0.12));
+
+    }
+
+    .env-body {
+
+      position: absolute;
+
+      left: 6%;
+
+      right: 6%;
+
+      top: 32%;
+
+      bottom: 8%;
+
+      background: linear-gradient(160deg, #efe4e6, #e0cdd2);
+
+      border-radius: 2px;
+
+      border: 1px solid rgba(255, 255, 255, 0.65);
+
+    }
+
+    .env-flap {
+
+      position: absolute;
+
+      left: 6%;
+
+      right: 6%;
+
+      top: 10%;
+
+      height: 48%;
+
+      background: linear-gradient(180deg, #e5d2d6, #d8bfc5);
+
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+
+      border-radius: 2px 2px 0 0;
+
+      transform-origin: 50% 0;
+
+      transition: transform 0.35s ease;
+
+    }
+
+    .env-card:active .env-flap { transform: rotateX(8deg); }
+
+
+
+    .wax {
+
+      position: absolute;
+
+      left: 50%;
+
+      top: 42%;
+
+      transform: translate(-50%, -50%);
+
+      width: 54px;
+
+      height: 54px;
+
+      border-radius: 50%;
+
+      background: radial-gradient(circle at 32% 28%, #efa4ad, var(--rose-deep));
+
+      box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.35), 0 6px 18px rgba(158, 85, 98, 0.32);
+
+      display: grid;
+
+      place-items: center;
+
+      font-family: "Libre Baskerville", serif;
+
+      font-size: 1.1rem;
+
+      color: var(--white);
+
+      animation: wax-shine 3s ease-in-out infinite;
+
+    }
+
+
+
+    .env-hint {
+
+      margin-top: 1.75rem;
+
+      font-size: 0.9rem;
+
+      color: var(--muted);
+
+      animation: hint-pulse 2.4s ease-in-out infinite;
+
+    }
+
+    @keyframes hint-pulse {
+
+      0%, 100% { opacity: 0.55; }
+
+      50% { opacity: 1; }
+
+    }
+
+
+
+    /* ——— Sections ——— */
+
+    @keyframes fade-rise {
+
+      from { opacity: 0; transform: translateY(32px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+    @keyframes soft-zoom {
+
+      from { opacity: 0; transform: scale(0.9); }
+
+      to { opacity: 1; transform: scale(1); }
+
+    }
+
+    @keyframes cd-pop {
+
+      from { opacity: 0; transform: scale(0.88); }
+
+      to { opacity: 1; transform: scale(1); }
+
+    }
+
+    @keyframes portrait-drift {
+
+      0%, 100% { transform: scale(1.04) translate3d(0, 0, 0); }
+
+      33% { transform: scale(1.1) translate3d(2%, -1.2%, 0); }
+
+      66% { transform: scale(1.07) translate3d(-1.5%, 1%, 0); }
+
+    }
+
+    section {
+
+      padding: 2rem 1.4rem 2.25rem;
+
+      position: relative;
+
+    }
+
+    section.reveal-on-scroll {
+
+      opacity: 0;
+
+      transform: translateY(34px);
+
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+
+      will-change: opacity, transform;
+
+    }
+
+    section.reveal-on-scroll.is-visible {
+
+      opacity: 1;
+
+      transform: translateY(0);
+
+    }
+
+    .hero.hero-reveal {
+
+      opacity: 0;
+
+      animation: fade-rise 0.95s var(--ease-out) 0.35s forwards;
+
+    }
+
+    section + section::before {
+
+      content: "";
+
+      display: block;
+
+      height: 1px;
+
+      background: linear-gradient(90deg, transparent, rgba(44, 38, 40, 0.12), transparent);
+
+      margin: -0.25rem 1rem 2rem;
+
+    }
+
+
+
+    .eyebrow {
+
+      font-size: 0.68rem;
+
+      letter-spacing: 0.22em;
+
+      text-transform: uppercase;
+
+      color: var(--sage);
+
+      font-weight: 600;
+
+      margin-bottom: 0.6rem;
+
+    }
+
+
+
+    h1, h2 {
+
+      font-family: "Libre Baskerville", serif;
+
+      font-weight: 400;
+
+      line-height: 1.2;
+
+    }
+
+    h1 { font-size: 1.85rem; margin-bottom: 0.5rem; }
+
+    h2 { font-size: 1.35rem; color: var(--rose-deep); margin-bottom: 0.85rem; }
+
+
+
+    .hero {
+
+      text-align: center;
+
+      padding-top: 2.5rem;
+
+      padding-bottom: 1rem;
+
+    }
+
+    .hero .ornament {
+
+      color: var(--rose);
+
+      font-size: 1rem;
+
+      margin: 0.35rem 0 0.9rem;
+
+      opacity: 0.9;
+
+    }
+
+
+
+    .photo-ring {
+
+      width: 148px;
+
+      height: 148px;
+
+      margin: 0 auto 1.15rem;
+
+      padding: 4px;
+
+      border-radius: 50%;
+
+      background: linear-gradient(135deg, var(--white), var(--blush));
+
+      box-shadow: 0 10px 40px rgba(44, 38, 40, 0.1);
+
+      animation: soft-zoom 0.95s var(--ease-out) 0.72s backwards;
+
+      overflow: hidden;
+
+    }
+
+    .photo-ring img {
+
+      width: 100%;
+
+      height: 100%;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      display: block;
+
+      transform-origin: 50% 45%;
+
+      animation: portrait-drift 18s ease-in-out 1.6s infinite;
+
+    }
+
+    .lead {
+
+      font-size: 0.95rem;
+
+      color: var(--muted);
+
+      max-width: 26ch;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .panel {
+
+      background: rgba(255, 255, 255, 0.72);
+
+      backdrop-filter: blur(8px);
+
+      border-radius: 18px;
+
+      padding: 1.25rem 1.2rem;
+
+      border: 1px solid rgba(255, 255, 255, 0.95);
+
+      box-shadow: 0 4px 24px rgba(44, 38, 40, 0.06);
+
+    }
+
+    .panel p + p { margin-top: 0.65rem; }
+
+    .panel strong { color: var(--ink); font-weight: 600; }
+
+
+
+    .countdown .panel { text-align: center; }
+
+    .count-label { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.75rem; }
+
+    .cd-row {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 0.45rem;
+
+    }
+
+    .cd-cell {
+
+      background: linear-gradient(180deg, rgba(234, 213, 216, 0.55), rgba(255, 255, 255, 0.9));
+
+      border-radius: 12px;
+
+      padding: 0.55rem 0.2rem;
+
+      border: 1px solid rgba(255, 255, 255, 0.8);
+
+      animation: cd-pop 0.6s var(--ease-out) both;
+
+    }
+
+    #countGrid:not([hidden]) .cd-cell:nth-child(1) { animation-delay: 0.06s; }
+
+    #countGrid:not([hidden]) .cd-cell:nth-child(2) { animation-delay: 0.16s; }
+
+    #countGrid:not([hidden]) .cd-cell:nth-child(3) { animation-delay: 0.26s; }
+
+    #countGrid:not([hidden]) .cd-cell:nth-child(4) { animation-delay: 0.36s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell {
+
+      opacity: 1;
+
+      transform: translateY(0);
+
+    }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(1) { transition-delay: 0.06s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(2) { transition-delay: 0.1s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(3) { transition-delay: 0.14s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(4) { transition-delay: 0.18s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(5) { transition-delay: 0.22s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(6) { transition-delay: 0.26s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(7) { transition-delay: 0.3s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(8) { transition-delay: 0.34s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(9) { transition-delay: 0.38s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(10) { transition-delay: 0.42s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(11) { transition-delay: 0.46s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(12) { transition-delay: 0.5s; }
+
+    .place-photo-wrap {
+
+      margin-top: 0.95rem;
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      border: 1px solid rgba(255, 255, 255, 0.85);
+
+      box-shadow: 0 8px 28px rgba(44, 38, 40, 0.08);
+
+      position: relative;
+
+    }
+
+    .place-photo-wrap img {
+
+      width: 100%;
+
+      aspect-ratio: 4 / 3;
+
+      height: auto;
+
+      display: block;
+
+      object-fit: cover;
+
+      transform: scale(1.08);
+
+      transform-origin: center;
+
+      transition: transform 1.05s var(--ease-out), filter 1s ease;
+
+      filter: brightness(0.92) saturate(0.88);
+
+      will-change: transform;
+
+    }
+
+    section.reveal-on-scroll.is-visible .place-photo-wrap img {
+
+      transform: scale(1);
+
+      filter: brightness(1) saturate(1);
+
+    }
+
+    .parents-photo-wrap {
+
+      margin-top: 0.85rem;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      border: 1px solid rgba(255, 255, 255, 0.9);
+
+      box-shadow: 0 10px 36px rgba(44, 38, 40, 0.09);
+
+      position: relative;
+
+    }
+
+    .parents-photo-wrap img {
+
+      width: 100%;
+
+      display: block;
+
+      aspect-ratio: 16 / 10;
+
+      object-fit: cover;
+
+      transform: scale(1.07);
+
+      transform-origin: center;
+
+      transition: transform 1.05s var(--ease-out), filter 1s ease;
+
+      filter: brightness(0.93) saturate(0.88);
+
+      will-change: transform;
+
+    }
+
+    section.reveal-on-scroll.is-visible .parents-photo-wrap img {
+
+      transform: scale(1);
+
+      filter: brightness(1) saturate(1);
+
+    }
+
+    .parents-caption {
+
+      font-size: 0.89rem;
+
+      color: var(--muted);
+
+      text-align: center;
+
+      margin-top: 0.75rem;
+
+    }
+
+    .dress-swatches {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin: 0 0 0.95rem;
+
+    }
+
+    .dress-swatch {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 10px;
+
+      border: 2px solid rgba(255, 255, 255, 0.95);
+
+      box-shadow: inset 0 0 0 1px rgba(44, 38, 40, 0.08), 0 6px 16px rgba(44, 38, 40, 0.1);
+
+      flex-shrink: 0;
+
+    }
+
+    .music-bar {
+
+      position: fixed;
+
+      bottom: calc(0.95rem + env(safe-area-inset-bottom));
+
+      left: calc(0.9rem + env(safe-area-inset-left));
+
+      z-index: 40;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 0.55rem;
+
+      max-width: min(88vw, 300px);
+
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+
+    }
+
+    .music-bar .music-hint {
+
+      flex: 1;
+
+      margin: 0;
+
+      padding: 0.45rem 0.65rem;
+
+      font-size: 0.7rem;
+
+      line-height: 1.38;
+
+      color: var(--ink);
+
+      background: rgba(255, 252, 249, 0.94);
+
+      border-radius: 12px;
+
+      border: 1px solid rgba(255, 255, 255, 0.9);
+
+      box-shadow: 0 6px 20px rgba(44, 38, 40, 0.1);
+
+      pointer-events: none;
+
+      min-width: 0;
+
+    }
+
+    .music-fab {
+
+      flex-shrink: 0;
+
+      width: 48px;
+
+      height: 48px;
+
+      border-radius: 50%;
+
+      border: none;
+
+      background: rgba(125, 155, 140, 0.96);
+
+      color: var(--white);
+
+      font-size: 1.2rem;
+
+      cursor: pointer;
+
+      box-shadow: 0 8px 24px rgba(44, 38, 40, 0.18);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      -webkit-tap-highlight-color: transparent;
+
+      transition: transform 0.2s ease;
+
+    }
+
+    .music-fab:active { transform: scale(0.95); opacity: 0.92; }
+
+    .music-fab.is-playing { background: var(--rose-deep); }
+
+    body:not(.invite-opened) .music-bar {
+
+      visibility: hidden;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+    }
+
+    body.invite-opened .music-bar { pointer-events: auto; }
+
+    .music-bar .music-hint.music-hint--off { display: none; }
+
+    .cd-num {
+
+      font-weight: 600;
+
+      font-size: 1.2rem;
+
+      font-variant-numeric: tabular-nums;
+
+      line-height: 1.2;
+
+    }
+
+    .cd-sub {
+
+      font-size: 0.62rem;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.06em;
+
+      color: var(--muted);
+
+      margin-top: 0.15rem;
+
+    }
+
+
+
+    .btn-primary {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 0.35rem;
+
+      margin-top: 0.95rem;
+
+      padding: 0.7rem 1.35rem;
+
+      background: var(--sage);
+
+      color: var(--white);
+
+      text-decoration: none;
+
+      border-radius: 999px;
+
+      font-size: 0.82rem;
+
+      font-weight: 600;
+
+      letter-spacing: 0.02em;
+
+    }
+
+    .btn-primary:active { opacity: 0.92; }
+
+
+
+    .mosaic {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 6px;
+
+      margin-top: 0.65rem;
+
+    }
+
+    .mosaic-cell {
+
+      aspect-ratio: 1;
+
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      opacity: 0;
+
+      transform: translateY(14px);
+
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+
+      background: linear-gradient(145deg, #e8dee0, #d4c4c8);
+
+      border: 1px solid rgba(255, 255, 255, 0.7);
+
+      box-shadow: 0 2px 8px rgba(44, 38, 40, 0.06);
+
+    }
+
+    .mosaic-cell img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+      transform: scale(1.14);
+
+      transform-origin: center;
+
+      transition: transform 0.75s var(--ease-out);
+
+      will-change: transform;
+
+    }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell img {
+
+      transform: scale(1);
+
+    }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(1) img { transition-delay: 0.06s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(2) img { transition-delay: 0.1s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(3) img { transition-delay: 0.14s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(4) img { transition-delay: 0.18s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(5) img { transition-delay: 0.22s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(6) img { transition-delay: 0.26s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(7) img { transition-delay: 0.3s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(8) img { transition-delay: 0.34s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(9) img { transition-delay: 0.38s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(10) img { transition-delay: 0.42s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(11) img { transition-delay: 0.46s; }
+
+    section.reveal-on-scroll.is-visible .mosaic-cell:nth-child(12) img { transition-delay: 0.5s; }
+
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+
+      section.reveal-on-scroll.is-visible .mosaic-cell:hover img {
+
+        transform: scale(1.07);
+
+      }
+
+
+      section.reveal-on-scroll.is-visible .parents-photo-wrap:hover img,
+      section.reveal-on-scroll.is-visible .place-photo-wrap:hover img {
+
+        transform: scale(1.02);
+
+      }
+
+
+    }
+
+
+    label {
+
+      display: block;
+
+      font-size: 0.8rem;
+
+      font-weight: 500;
+
+      color: var(--muted);
+
+      margin: 0.85rem 0 0.35rem;
+
+    }
+
+    input, select, textarea {
+
+      width: 100%;
+
+      font: inherit;
+
+      padding: 0.65rem 0.75rem;
+
+      border: 1px solid rgba(44, 38, 40, 0.14);
+
+      border-radius: 12px;
+
+      background: var(--white);
+
+    }
+
+    textarea { min-height: 76px; resize: vertical; }
+
+
+
+    .btn-submit {
+
+      width: 100%;
+
+      margin-top: 1.1rem;
+
+      padding: 0.85rem;
+
+      border: none;
+
+      border-radius: 14px;
+
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+
+      color: var(--white);
+
+      font: inherit;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+    }
+
+    .btn-submit:active { transform: scale(0.99); }
+
+
+
+    .note {
+
+      font-size: 0.72rem;
+
+      color: var(--muted);
+
+      margin-top: 0.85rem;
+
+      line-height: 1.45;
+
+    }
+
+    .form-embed-wrap {
+
+      margin-top: 0.35rem;
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      background: var(--white);
+
+      border: 1px solid rgba(44, 38, 40, 0.1);
+
+      box-shadow: 0 6px 24px rgba(44, 38, 40, 0.07);
+
+    }
+
+    .form-embed-frame {
+
+      display: block;
+
+      width: 100%;
+
+      max-width: 100%;
+
+      height: var(--form-embed-height);
+
+      border: 0;
+
+    }
+
+    .form-help {
+
+      font-size: 0.76rem;
+
+      line-height: 1.42;
+
+      color: var(--muted);
+
+      margin: 0 0 0.75rem;
+
+      padding: 0.55rem 0.65rem;
+
+      border-radius: 12px;
+
+      background: rgba(255, 255, 255, 0.45);
+
+      border: 1px solid rgba(44, 38, 40, 0.08);
+
+    }
+
+    .form-help summary {
+
+      cursor: pointer;
+
+      font-weight: 600;
+
+      color: var(--sage);
+
+      list-style: none;
+
+      margin-bottom: 0;
+
+    }
+
+    .form-help summary::-webkit-details-marker { display: none; }
+
+    .form-help[open] summary { margin-bottom: 0.45rem; }
+
+    .form-help p { margin: 0 0 0.45rem; }
+
+    .form-help p:last-child { margin-bottom: 0; }
+
+
+
+    footer {
+
+      text-align: center;
+
+      padding: 1rem 1.4rem 3.85rem;
+
+      font-size: 0.72rem;
+
+      color: var(--muted);
+
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .envelope-layer,
+
+      .env-card,
+
+      .wax,
+
+      .photo-ring,
+
+      .photo-ring img,
+
+      .cd-cell {
+
+        animation: none !important;
+
+      }
+
+
+
+      section.reveal-on-scroll,
+
+      section.reveal-on-scroll.is-visible .mosaic-cell {
+
+        transition: none !important;
+
+      }
+
+      section.reveal-on-scroll.is-visible .mosaic-cell img,
+      section.reveal-on-scroll.is-visible .place-photo-wrap img,
+      section.reveal-on-scroll.is-visible .parents-photo-wrap img {
+
+        transform: none !important;
+
+        filter: none !important;
+
+        transition: none !important;
+
+      }
+
+      .hero.hero-reveal { animation: none; opacity: 1; }
+
+      .env-card { transform: none; }
+
+      section.reveal-on-scroll {
+
+        opacity: 1 !important;
+
+        transform: none !important;
+
+      }
+
+      .mosaic-cell {
+
+        opacity: 1 !important;
+
+        transform: none !important;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="page">
+
+    <div class="envelope-layer" id="envelopeScreen" role="dialog" aria-label="Открыть приглашение">
+
+      <div class="env-card" id="openInvite" tabindex="0" role="button">
+
+        <p class="env-sub" id="envelopeSub">Первый день рождения</p>
+
+        <p class="env-pretitle" id="envelopeTitle">Маленькая<br />София</p>
+
+        <div class="env-visual">
+
+          <div class="env-body"></div>
+
+          <div class="env-flap"></div>
+
+          <div class="wax" aria-hidden="true">✶</div>
+
+        </div>
+
+        <p class="env-hint">Нажмите, чтобы открыть приглашение</p>
+
+      </div>
+
+    </div>
+
+
+
+    <main>
+
+      <section class="hero hero-reveal">
+
+        <p class="eyebrow">Первый день рождения</p>
+
+        <h1>Маленькая<br>София</h1>
+
+        <p class="ornament">☙ ❧</p>
+
+        <div class="photo-ring">
+
+          <img src="img/portret-glavnaya.jpg" width="140" height="140" alt="Портрет" />
+
+        </div>
+
+        <p class="lead">Приглашаем вас в сад сказки — тихо, нежно, среди цветов и света. Будем рады видеть вас рядом в этот особенный день.</p>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Семья</p>
+
+        <h2>С любовью</h2>
+
+        <div class="parents-photo-wrap">
+
+          <img src="img/parents.jpg" alt="Мама и папа" loading="lazy" width="960" height="600" />
+
+        </div>
+
+        <p class="parents-caption">Мы будем счастливы разделить этот день с вами.</p>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll countdown">
+
+        <p class="eyebrow">До встречи</p>
+
+        <h2>Обратный отсчёт</h2>
+
+        <div class="panel">
+
+          <p class="count-label" id="countText">Считаем дни…</p>
+
+          <div class="cd-row" id="countGrid" hidden>
+
+            <div class="cd-cell"><div class="cd-num" id="d">—</div><div class="cd-sub">дней</div></div>
+
+            <div class="cd-cell"><div class="cd-num" id="h">—</div><div class="cd-sub">час</div></div>
+
+            <div class="cd-cell"><div class="cd-num" id="m">—</div><div class="cd-sub">мин</div></div>
+
+            <div class="cd-cell"><div class="cd-num" id="s">—</div><div class="cd-sub">сек</div></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Куда и когда</p>
+
+        <h2>Сохраните дату</h2>
+
+        <div class="panel">
+
+          <p><strong>Дата и время:</strong> суббота, 20 июня 2026 · с 15:00</p>
+
+          <p><strong>Место:</strong> дачный клуб «Поляна», Лесная аллея, 8</p>
+
+          <div class="place-photo-wrap">
+
+            <img src="img/place.jpg" alt="Место проведения" loading="lazy" width="960" height="720" />
+
+          </div>
+
+          <a class="btn-primary" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Открыть карту</a>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Первый год</p>
+
+        <h2>Двенадцать месяцев</h2>
+
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Маленькие вехи — большая любовь. Двенадцать фото по порядку: слева направо, сверху вниз.</p>
+
+        <div class="mosaic" id="months" aria-label="Фото по месяцам">
+
+          <div class="mosaic-cell"><img src="img/mesyac-01.jpg" alt="1-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-02.jpg" alt="2-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-03.jpg" alt="3-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-04.jpg" alt="4-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-05.jpg" alt="5-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-06.jpg" alt="6-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-07.jpg" alt="7-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-08.jpg" alt="8-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-09.jpg" alt="9-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-10.jpg" alt="10-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-11.jpg" alt="11-й месяц" loading="lazy" width="400" height="400" /></div>
+
+          <div class="mosaic-cell"><img src="img/mesyac-12.jpg" alt="12-й месяц" loading="lazy" width="400" height="400" /></div>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Подарки</p>
+
+        <h2>Коротко о подарках</h2>
+
+        <div class="panel">
+
+          <p>Для нас главное — ваше присутствие. Если хочется что-то выбрать заранее, загляните в список идей по ссылке ниже.</p>
+
+          <p><a href="#" style="color:var(--sage);font-weight:600;">Список подарков (пример)</a></p>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Образ</p>
+
+        <h2>Дресс-код</h2>
+
+        <div class="panel">
+
+          <div class="dress-swatches" role="list" aria-label="Подсказка по оттенкам">
+
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-1)" title="Оттенок 1"></span>
+
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-2)" title="Оттенок 2"></span>
+
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-3)" title="Оттенок 3"></span>
+
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-4)" title="Оттенок 4"></span>
+
+            <span class="dress-swatch" role="listitem" style="background:var(--dress-5)" title="Оттенок 5"></span>
+
+          </div>
+
+          <p>Пастель, лёгкие ткани, цветочные акценты. Оттенки квадратов меняются в одном месте: в блоке стилей <code style="font-size:0.75em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">:root</code> переменные <code style="font-size:0.72em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-1</code> … <code style="font-size:0.72em;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-5</code>.</p>
+
+        </div>
+
+      </section>
+
+
+
+      <section class="reveal-on-scroll">
+
+        <p class="eyebrow">Ответьте, пожалуйста</p>
+
+        <h2>Подтверждение</h2>
+
+        <div class="panel">
+
+          <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.55rem;">Ниже встроена Google-форма — ответы собираются в вашу таблицу; для заказа подставляйте другую ссылку из Google Forms (кнопка «Встроить»).</p>
+
+          <details class="form-help">
+
+            <summary>Вместо вопросов показывается вход в Google?</summary>
+
+            <p>Откройте эту форму в редакторе Google Forms → шестерёнка <strong>Настройки</strong> → снимите ограничение вроде «только ваш организационный аккаунт» / домен Workspace. Для публичного приглашения ответ должен отправляться <strong>без обязательного входа в Google</strong> (если политики компании это допускают).</p>
+
+            <p>Если организация не разрешает анонимный доступ к форме, iframe на вашем сайте всегда будет просить Войти — тогда имеет смысл кнопка «Открыть форму» на отдельной вкладке или другой сервис: Microsoft Forms с публичной ссылкой, Tally.so, Fillout и т.д.</p>
+
+          </details>
+
+
+
+          <p style="font-size:0.74rem;color:var(--muted);margin:0 0 0.5rem;line-height:1.45;">Высоту окна формы задаёт CSS: <code style="font-size:0.86em;background:rgba(0,0,0,0.06);padding:0.05rem 0.2rem;border-radius:4px;">--form-embed-height</code> в <code style="font-size:0.86em;background:rgba(0,0,0,0.06);padding:0.05rem 0.2rem;border-radius:4px;">:root</code> (не обязательно менять цифры в окне «Встроить» Google). Длинную анкету гости листают внутри окна.</p>
+
+
+
+          <div class="form-embed-wrap">
+
+            <iframe title="Подтверждение участия" class="form-embed-frame" src="https://docs.google.com/forms/d/e/1FAIpQLSeKVHH6bJpHqRpMYkgd0eWfAglsIWMPiB4p4KFxo6dVEA1aMw/viewform?embedded=true" width="100%" height="960" loading="lazy">Загрузка…</iframe>
+
+          </div>
+
+          <p class="note">Дата таймера — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">TARGET_ISO</code> внизу. Фото — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">img/</code>, музыка — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">audio/audio.mp3</code>, высота блока формы — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--form-embed-height</code>, палитра дресс-кода — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-1</code> … <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">--dress-5</code> в <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">:root</code>. Имена файлов — <code style="font-size:0.68rem;background:rgba(0,0,0,0.06);padding:0.1rem 0.25rem;border-radius:4px;">img/FOTO-IMENA.txt</code>.</p>
+
+        </div>
+
+      </section>
+
+
+
+      <footer>Демо-приглашение · пример для показа клиентам · все данные вымышленные</footer>
+
+    </main>
+
+  </div>
+
+
+
+  <!-- Файл: audio/audio.mp3. Автозапуск ограничивают — пробуем после конверта; если тихо, нажмите ♪ рядом с подсказкой. -->
+
+  <audio id="bgMusic" src="audio/audio.mp3" preload="auto" loop></audio>
+
+  <div class="music-bar" role="region" aria-label="Музыка на странице">
+
+    <button type="button" id="musicToggle" class="music-fab" aria-describedby="musicHelp" aria-label="Музыка: включить">♪</button>
+
+    <p class="music-hint" id="musicHelp">Часть браузеров не даёт звук с первого раза. Нажмите зелёную кнопку ♪ — так музыка точно включится.</p>
+
+  </div>
+
+
+
+  <script>
+
+    (function envelope() {
+
+      var layer = document.getElementById("envelopeScreen");
+
+      var btn = document.getElementById("openInvite");
+
+      function tryMusic() {
+
+        var a = document.getElementById("bgMusic");
+
+        if (!a) return;
+
+        a.play()
+
+          .then(function () {
+
+            var fab = document.getElementById("musicToggle");
+
+            if (fab) {
+
+              fab.classList.add("is-playing");
+
+              fab.textContent = "♫";
+
+              fab.setAttribute("aria-label", "Музыка: пауза");
+
+            }
+
+
+
+            var help = document.getElementById("musicHelp");
+
+            if (help) help.classList.add("music-hint--off");          })
+
+          .catch(function () {});
+
+      }
+
+      function open() {
+
+        layer.classList.add("is-hidden");
+
+        document.body.style.overflow = "";
+
+        document.body.classList.add("invite-opened");
+
+        tryMusic();
+
+      }
+
+      btn.addEventListener("click", open);
+
+      btn.addEventListener("keydown", function (e) {
+
+        if (e.key === "Enter" || e.key === " ") {
+
+          e.preventDefault();
+
+          open();
+
+        }
+
+      });
+
+      var toggle = document.getElementById("musicToggle");
+
+      var au = document.getElementById("bgMusic");
+
+      if (toggle && au) {
+
+        toggle.addEventListener("click", function () {
+
+          if (au.paused) {
+
+            au.play().then(function () {
+
+              toggle.classList.add("is-playing");
+
+              toggle.textContent = "♫";
+
+              toggle.setAttribute("aria-label", "Музыка: пауза");
+
+              var h2 = document.getElementById("musicHelp");
+
+              if (h2) h2.classList.add("music-hint--off");
+
+            }).catch(function () {});
+
+          } else {
+
+            au.pause();
+
+            toggle.classList.remove("is-playing");
+
+            toggle.textContent = "♪";
+
+            toggle.setAttribute("aria-label", "Музыка: включить");
+
+            var h3 = document.getElementById("musicHelp");
+
+            if (h3) h3.classList.remove("music-hint--off");
+
+          }
+
+        });
+
+      }
+
+    })();
+
+
+
+    /* Поменяйте дату праздника */
+
+    var TARGET_ISO = "2026-06-20T15:00:00";
+
+
+
+    (function countdown() {
+
+      var target = new Date(TARGET_ISO).getTime();
+
+      var countText = document.getElementById("countText");
+
+      var grid = document.getElementById("countGrid");
+
+      var dEl = document.getElementById("d");
+
+      var hEl = document.getElementById("h");
+
+      var mEl = document.getElementById("m");
+
+      var sEl = document.getElementById("s");
+
+
+
+      function pad(n) { return String(n).padStart(2, "0"); }
+
+
+
+      function tick() {
+
+        var now = Date.now();
+
+        var diff = target - now;
+
+        if (diff <= 0) {
+
+          countText.textContent = "Сегодня праздник! До встречи ✶";
+
+          grid.hidden = true;
+
+          return;
+
+        }
+
+        grid.hidden = false;
+
+        countText.textContent = "Осталось до начала";
+
+        var sec = Math.floor(diff / 1000);
+
+        dEl.textContent = String(Math.floor(sec / 86400));
+
+        hEl.textContent = pad(Math.floor((sec % 86400) / 3600));
+
+        mEl.textContent = pad(Math.floor((sec % 3600) / 60));
+
+        sEl.textContent = pad(sec % 60);
+
+      }
+
+      tick();
+
+      setInterval(tick, 1000);
+
+    })();
+
+    (function scrollReveal() {
+
+      var nodes = document.querySelectorAll(".reveal-on-scroll");
+
+      if (!nodes.length) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+
+        nodes.forEach(function (el) { el.classList.add("is-visible"); });
+
+        return;
+
+      }
+
+      var obs = new IntersectionObserver(
+        function (entries) {
+
+          entries.forEach(function (en) {
+
+            if (en.isIntersecting) en.target.classList.add("is-visible");
+
+          });
+
+        },
+        { rootMargin: "0px 0px -52px 0px", threshold: 0.1 }
+      );
+
+      nodes.forEach(function (sec) {
+
+        obs.observe(sec);
+
+      });
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
+
